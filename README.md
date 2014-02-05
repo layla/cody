@@ -11,7 +11,7 @@ The input format for the generator is as following (example is given in yaml, ot
 
 The root of the input contains the package name the resources that exist within in the package.
 
-```yml
+```yaml
 package: Vendor.Name
 resources:
   ...
@@ -28,27 +28,27 @@ There are many types of resources available, let's start with the core language 
 
 ### Class
 
-```yml
+```yaml
 Models.User:
-	class:
-		properties:
-			rules:
-				value:
-					name: required
-					email: required|email
-				comment: The rules for this model
-		methods:
-			get.rules:
-				body:
-					php-core: return $this->rules;
-				comment: Get the rules for this model
-				returnType: array
-			set.rules
-				parameters:
-					rules:
-						default: array
-				body:
-					php-core: $this->rules = $rules;
+  class:
+    properties:
+      rules:
+        value:
+          name: required
+          email: required|email
+        comment: The rules for this model
+    methods:
+      get.rules:
+        body:
+          php-core: return $this->rules;
+        comment: Get the rules for this model
+        returnType: array
+      set.rules
+        parameters:
+          rules:
+            default: array
+        body:
+          php-core: $this->rules = $rules;
 ```
 
 # Generate from CLI
@@ -94,27 +94,27 @@ In case you already have a (compatible) container, you can pass that into the Se
 4) Profit!
 ```php
 $input = array(
-	'package' => 'Example.Package',
-	'resources' => array(
-		'Models.News' => array(
-			'model' => array(
-				'relations' => array(
-					'categories' => array(
-						'other' => 'Models.Category'
-					)
-				)
-			),
-			'compilers' => array(
-				'laravel-php'
-			)
-		)
-	)
+  'package' => 'Example.Package',
+  'resources' => array(
+    'Models.News' => array(
+      'model' => array(
+        'relations' => array(
+          'categories' => array(
+            'other' => 'Models.Category'
+          )
+        )
+      ),
+      'compilers' => array(
+        'laravel-php'
+      )
+    )
+  )
 );
 
 $files = $app->make('cody')->compileInput($input);
 
 foreach($files as $filename => $content)
 {
-	// save it, echo it, do whatever you want to do with it
+  // save it, echo it, do whatever you want to do with it
 }
 ```
