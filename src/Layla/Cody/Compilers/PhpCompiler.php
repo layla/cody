@@ -1,6 +1,7 @@
 <?php namespace Layla\Cody\Compilers;
 
 use Layla\Cody\Compilers\Php\Core\NamespaceCompiler;
+use Layla\Cody\Compilers\Php\Core\ClassCompiler;
 
 class PhpCompiler extends Compiler {
 
@@ -12,12 +13,11 @@ class PhpCompiler extends Compiler {
 	 * @var array
 	 */
 	protected $typeMap = array(
-		'',
-		'array',
-		'string',
-		'integer',
-		'float',
-		'object'
+		'array' => 'array',
+		'string' => 'string',
+		'integer' => 'integer',
+		'float' => 'float',
+		'object' => 'object'
 	);
 
 	/**
@@ -94,6 +94,13 @@ class PhpCompiler extends Compiler {
 		}
 
 		return $thing;
+	}
+
+	public function compile($type)
+	{
+		$compiler = new ClassCompiler($this->app, $this->package, $this->name, $this->configuration);
+
+		return $compiler->compile();
 	}
 
 }
