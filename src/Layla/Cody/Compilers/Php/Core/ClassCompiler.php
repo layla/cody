@@ -98,13 +98,17 @@ class ClassCompiler extends PhpCompiler {
 		$content .= " {\n";
 
 		// Add properties
-		// $properties = $this->get('properties');
+		$properties = $this->get('properties');
+		if($properties)
+		{
+			foreach($properties as $name => $configuration)
+			{
+				$compiler = new PropertyCompiler($name, $configuration);
 
-		// if( ! $properties)
-		// {
-		// 	$this->compile
-		// 	$content .= "\n".$this->indent($properties->compile())."\n";
-		// }
+				$content .= "\n".$this->indent($compiler->compile())."\n";
+			}
+
+		}
 
 		// // Add methods
 		$methods = $this->get('methods');
