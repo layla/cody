@@ -207,7 +207,7 @@ path | path to file or directory containing config code
 
 Option | Description
 --- | ---
---format | Specify the input format (default: "yml")
+--format | Specify the input format (default: "yml")<br><br>Available options are:<br>**yml**<br>**json**<br>**stdin**
 --save | Save code code to path
 --path | Set the path for files (default: ".")
 --json | Return files as JSON
