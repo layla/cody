@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+require 'vendor/autoload.php';
+
+use Illuminate\Console\Application as ConsoleApplication;
+use Illuminate\Container\Container as Application;
+
+use Layla\Cody\CodyServiceProvider;
+use Layla\Cody\Cli\GenerateCommand;
+
+$app = new Application;
+
+$provider = new CodyServiceProvider($app);
+$provider->register();
+
+$artisan = new ConsoleApplication;
+$artisan->add(new GenerateCommand($app));
+$status = $artisan->run();
+
+exit($status);

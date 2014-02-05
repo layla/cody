@@ -1,0 +1,11 @@
+model:
+  name: Base
+  methods:
+    get.translated.attributes:
+      returnType: array
+      content:
+        php-core: return $this->translatedAttributes();
+        js-ember: return this.translatedAttributes();
+compilers:
+  - php-laravel
+  # - js-ember

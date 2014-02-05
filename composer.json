@@ -1,0 +1,30 @@
+{
+    "name": "layla/cody",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Koen Schmeets",
+            "email": "k.schmeets@gmail.com"
+        },
+        {
+            "name": "Roj Vroemen",
+            "email": "rojtjo@gmail.com"
+        }
+    ],
+    "require": {
+       	"symfony/yaml": "dev-master",
+       	"illuminate/console": "~4",
+        "illuminate/container": "~4",
+       	"illuminate/support": "~4",
+        "illuminate/view": "~4",
+        "illuminate/events": "~4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Layla\\Cody": "src"
+        }
+    }
+}

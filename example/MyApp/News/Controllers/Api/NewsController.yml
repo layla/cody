@@ -1,0 +1,5 @@
+controller:
+  base: MyApp.Foundation.Controllers.Base
+compilers:
+  - php-laravel
+  # - js-ember

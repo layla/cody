@@ -1,0 +1,22 @@
+package: Trapps.Trails
+resources:
+  Models.Trail:
+    model:
+        relations:
+          categories:
+            type: hasMany
+            other: Models.TrailCategory
+          encounterings:
+            type: morphMany
+            other: Models.Encountering
+        base: Trapps.Core.Models.Base
+    compilers:
+      - php-laravel
+#      - js-ember
+
+  Models.TrailCategory:
+    model:
+      base: Trapps.Core.Models.Base
+    compilers:
+      - php-laravel
+#      - js-ember
