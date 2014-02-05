@@ -8,13 +8,20 @@ The Layla Code generator
 `./generator generate [--format="yml"] [--save] [--path="."] [--json] [--sync] [path]`
 
 Arguments:
+
  path                  path to file or directory containing config code
 
+
 Options:
+
  --format              Specify the input format (default: "yml")
+
  --save                Save code code to path
+
  --path                Set the path for files (default: ".")
+
  --json                Return files as JSON
+
  --sync                Sync code with database
 
 # Use in PHP
