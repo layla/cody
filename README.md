@@ -281,7 +281,7 @@ $input = '
       "model": {
         "relations": {
           "categories": {
-            "other": Models.Category
+            "other": "Models.Category"
           }
         }
       }
