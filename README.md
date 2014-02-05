@@ -11,7 +11,7 @@ The input format for the generator is as following (example is given in yaml, ot
 
 The root of the input contains the package name the resources that exist within in the package.
 
-```yaml
+```yml
 package: Vendor.Name
 resources:
   ...
@@ -28,7 +28,7 @@ There are many types of resources available, let's start with the core language 
 
 ### Class
 
-```yaml
+```yml
 Models.User:
 	class:
 		properties:
