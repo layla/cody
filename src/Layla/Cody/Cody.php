@@ -32,8 +32,15 @@ class Cody {
 		return $files;
 	}
 
-	public function compileInput($input)
+	public function compileInput($input, $format = null)
 	{
+		if( ! is_null($format))
+		{
+			$parser = $this->app->make('formats.'.$format);
+
+			$input = $parser->parse($input);
+		}
+
 		$package = $input['package'];
 		$resources = $input['resources'];
 

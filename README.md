@@ -255,6 +255,22 @@ $input = array(
 
 $files = $app->make('cody')->compileInput($input);
 
+// Or, if you like your input to be parsed, specify the name of the parser as the second argument
+
+$input = "
+package: Example.Package
+resources:
+  Models.News:
+    model:
+      relations:
+        categories:
+          other: Models.Category
+    compilers:
+      laravel-php
+";
+
+$files = $app->make('cody')->compileInput($input, 'yml');
+
 foreach($files as $filename => $content)
 {
   // save it, echo it, do whatever you want to do with it
