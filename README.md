@@ -14,7 +14,7 @@ The root of the input contains the package name the resources that exist within 
 ```yaml
 package: Vendor.Name
 resources:
-  ...
+  __resources__
 ```
 
 Property | Description
@@ -24,31 +24,72 @@ Property | Description
 
 ## Resources
 
-There are many types of resources available, let's start with the core language resources
-
-### Class
+The resources are defined with the names as the key, and the configurations as the value
 
 ```yaml
 Models.User:
-  class:
-    properties:
+  __resource_configuration__
+Models.NewsItem
+  __resource_configuration__
+```
+
+## Resource Configuration
+
+The resource configuration may only contain 2 keys.
+The compilers key should always be present, it tells Cody what compiler(s) it should use to compile your resource.
+The second key can be one of the following:
+
+Key | Type | Description
+--- | --- | ---
+`compilers` | `compiler` | Indicates what compilers should be used to compile the resource
+`class` | `class configuration` | Indicates the resource is of type Class, value of this key is the configuration for the class
+`model` | `model configuration` | Indicates the resource is of type Model, value of this key is the configuration for the model
+`controller` | `controller configuration` | Indicates the resource is of type Controller, value of this key is the configuration for the controller
+
+The compiler expects the resource to ONLY contain the `compilers` property and on of the available types.
+
+## Compiler
+
+The available compilers are
+
+```yaml
+- php-core
+- php-laravel
+- js-core
+- js-ember
+```
+
+### Class configuration
+
+Every resource has a `name`, it is the only key of the resource object.
+The value of the key is an object containing the following properties
+
+Key | Type | Description
+--- | --- | ---
+`base` | string | Indicates the base class of this class
+`properties` | `property configuration` | Indicates the properties that should be present on the class
+`methods` | `method configuration` | Indicates the methods that should be present on the class
+
+```yaml
+base: MyApp.Foundation.Models.Base
+properties:
+  rules:
+    value:
+      name: required
+      email: required|email
+    comment: The rules for this model
+methods:
+  get.rules:
+    body:
+      php-core: return $this->rules;
+    comment: Get the rules for this model
+    returnType: array
+  set.rules
+    parameters:
       rules:
-        value:
-          name: required
-          email: required|email
-        comment: The rules for this model
-    methods:
-      get.rules:
-        body:
-          php-core: return $this->rules;
-        comment: Get the rules for this model
-        returnType: array
-      set.rules
-        parameters:
-          rules:
-            default: array
-        body:
-          php-core: $this->rules = $rules;
+        default: array
+    body:
+      php-core: $this->rules = $rules;
 ```
 
 # Generate from CLI
