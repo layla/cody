@@ -81,7 +81,9 @@ class PhpCompiler extends Compiler {
 
 		$namespaceCompiler = $this->getNamespaceCompilerFor($type);
 
-		return "\\".$namespaceCompiler->getName();
+		$typeParts = explode('.', $type);
+
+		return (count($typeParts) > 1 ? "\\" : "").$namespaceCompiler->getName();
 	}
 
 	public function export($thing)
