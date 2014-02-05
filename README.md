@@ -14,25 +14,32 @@ The root of the input contains the package name the resources that exist within 
 ```yaml
 package: Vendor.Name
 resources:
-  __resources__
+  __RESOURCES__
 ```
 
 Property | Description
 --- | ---
 `package` | Contains the vendor and name of the page, seperated with a `.` and capitalized.<br>The reason we capitalize the vendor and name is because this way, it will contain more information for our compilers.<br>Compilers will use the Package name in filenames and namespaces, this may differ per compiler.
-`resources` | Determines the resources that are present in the package
+`resources` | Determines the [resources](#resources) that are present in the package
 
+<a name="resources"></a>
 ## Resources
 
 The resources are defined with the names as the key, and the configurations as the value
 
+Property | Description
+--- | ---
+name | The name property indicates the name as the key, and the [resource configuration](#resource-configuration) as value
+
+An example:
 ```yaml
 Models.User:
-  __resource_configuration__
+  __RESOURCE_CONFIGURATION__
 Models.NewsItem
-  __resource_configuration__
+  __RESOURCE_CONFIGURATION__
 ```
 
+<a name="resource-configuration"></a>
 ## Resource Configuration
 
 The resource configuration may only contain 2 keys.
@@ -41,58 +48,152 @@ The second key can be one of the following:
 
 Key | Type | Description
 --- | --- | ---
-`compilers` | `compiler` | Indicates what compilers should be used to compile the resource
-`class` | `class configuration` | Indicates the resource is of type Class, value of this key is the configuration for the class
-`model` | `model configuration` | Indicates the resource is of type Model, value of this key is the configuration for the model
-`controller` | `controller configuration` | Indicates the resource is of type Controller, value of this key is the configuration for the controller
+`compilers` | array | Indicates what compilers should be used to compile the resource, available options are:<br>**php-core**<br>**php-laravel**<br>**js-core**<br>**js-ember**
+`class` | [class configuration](#class-configuration) | Indicates the resource is of type Class, value of this key is the configuration for the class
+`model` | [model configuration](#model-configuration) | Indicates the resource is of type Model, value of this key is the configuration for the model
+`controller` | [controller configuration](#controller-configuration) | Indicates the resource is of type Controller, value of this key is the configuration for the controller
 
 The compiler expects the resource to ONLY contain the `compilers` property and on of the available types.
 
-## Compiler
-
-The available compilers are
-
+An example:
 ```yaml
-- php-core
-- php-laravel
-- js-core
-- js-ember
+Models.User:
+  class:
+    __CLASS_CONFIGURATION__
+  compilers:
+    - php-laravel
 ```
 
-### Class configuration
+<a name="class-configuration"></a>
+## Class configuration
 
-Every resource has a `name`, it is the only key of the resource object.
-The value of the key is an object containing the following properties
+The class configuration holds all the information we need to build a class.
+The available options are
 
 Key | Type | Description
 --- | --- | ---
 `base` | string | Indicates the base class of this class
-`properties` | `property configuration` | Indicates the properties that should be present on the class
-`methods` | `method configuration` | Indicates the methods that should be present on the class
+`properties` | [property configuration](#property-configuration) | Keys represent the name of the property, values contain the [property configuration](#property-configuration)
+`methods` | [method configuration](#method-configuration) | Keys represent the method name, values contain the [method configuration](#method-configuration)
 
 ```yaml
 base: MyApp.Foundation.Models.Base
 properties:
   rules:
-    value:
-      name: required
-      email: required|email
-    comment: The rules for this model
+    __PROPERTY_CONFIGURATION__
 methods:
   get.rules:
-    body:
-      php-core: return $this->rules;
-    comment: Get the rules for this model
-    returnType: array
+    __METHOD_CONFIGURATION__
   set.rules
-    parameters:
-      rules:
-        default: array
-    body:
-      php-core: $this->rules = $rules;
+    __METHOD_CONFIGURATION__
+```
+
+<a name="model-configuration"></a>
+## Model configuration
+
+A model is an extension of the class, it allows you to specify relations and columns, and will automatically add the necesarry methods / properties for you, depending on the compiler.
+
+Key | Type | Description
+--- | --- | ---
+`base` | string | Indicates the base class of this class
+`properties` | [property configuration](#property-configuration) | Indicates the properties that should be present on the class
+`methods` | [method configuration](#method-configuration) | Indicates the methods that should be present on the class
+`relations` | [relation configuration](#relation-configuration) | Indicates the relations that should be present on the model
+`columns` | [column configuration](#column-configuration) | Indicates the columns that should be present on the model
+
+```yaml
+base: MyApp.Foundation.Models.Base
+properties:
+  rules:
+    __property_configuration
+methods:
+  get.rules:
+    __METHOD_CONFIGURATION__
+  set.rules
+    __METHOD_CONFIGURATION__
+relations:
+  __RELATION_CONFIGURATION__
+columns:
+  __COLUMN_CONFIGURATION__
+```
+
+<a name="method-configuration"></a>
+## Method configuration
+
+A method can be added to class resources, or subclasses thereof (models, controllers, etc.)
+
+Key | Type | Description
+--- | --- | ---
+`body` | array | Keys represent the compiler name, values contain the method body for the given compiler
+`comment` | string | The method's comment
+`returnType` | * | The return type, resource identifier or one of the following types:<br>**array**<br>**integer**
+
+An example:
+```yaml
+body:
+  php-core: return $this->rules;
+comment: Get the rules for this model
+returnType: array
+```
+
+<a name="property-configuration">
+## Property configuration
+
+A property can be added to class resources, or subclasses thereof (models, controllers, etc.)
+
+Key | Type | Description
+--- | --- | ---
+`value` | * | The value of the property
+`comment` | string | The property's comment
+
+An example:
+```yaml
+value:
+  name: required
+  email: required|email
+comment: The rules for this model
+```
+
+<a name="relation-configuration">
+## Relation configuration
+
+A relation can be added to a model resource, or subclasses thereof
+
+Key | Type | Description
+--- | --- | ---
+`type` | * | The type of the relation
+`other` | string | The other resource
+
+An example:
+```yaml
+type: hasMany
+other: Models.TrailCategory
+```
+
+<a name="column-configuration">
+## Column configuration
+
+A column can be added to a model resource, or subclasses thereof
+
+Key | Type | Description
+--- | --- | ---
+`type` | * | The type of the column
+`max` | string | The max size
+`nullable` | boolean | Indicates if the columns is nullable
+
+An example:
+```yaml
+type: string
+max: 255
+nullable: true
 ```
 
 # Generate from CLI
+
+The generator can take your input file and spit out JSON, or save the files to their calculated destinations.
+The input can even be a folder, if that's the case, Cody will use the top 2 folders as the package name, and all the folders below indicate the namespace.
+The files found in the deepest folders represent the resource name, and the contents of the file represent the resource configuration.
+An example of this setup can be found in `vendor/cody/example`
 
 `./generator generate [--format="yml"] [--save] [--path="."] [--json] [--sync] [path]`
 
