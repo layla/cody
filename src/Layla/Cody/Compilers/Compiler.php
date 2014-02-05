@@ -8,9 +8,16 @@ class Compiler {
 		$this->package = $package;
 		$this->name = $name;
 		$this->configuration = $configuration;
+
 		$this->setup();
 	}
 
+	/**
+	 * Runs after properties are setup,
+	 * Allows for easily modifying the configuration by extending a compiler
+	 *
+	 * @return void
+	 */
 	public function setup(){}
 
 	/**
@@ -102,9 +109,14 @@ class Compiler {
 		return $this;
 	}
 
-	public function get($key, $default = null)
+	public function get($key, $default = null, $on = null)
 	{
-		return array_key_exists($key, $this->configuration) ? $this->configuration[$key] : $default;
+		if(is_null($on))
+		{
+			$on = $this->configuration;
+		}
+
+		return array_key_exists($key, $on) ? $on[$key] : $default;
 	}
 
 }
