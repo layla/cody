@@ -2,14 +2,25 @@ package: Trapps.Trails
 resources:
   Models.Trail:
     model:
-        relations:
-          categories:
-            type: hasMany
-            other: Models.TrailCategory
-          encounterings:
-            type: morphMany
-            other: Models.Encountering
-        base: Trapps.Core.Models.Base
+      base: Trapps.Core.Models.Base
+      relations:
+        categories:
+          type: hasMany
+          other: Models.TrailCategory
+        encounterings:
+          type: morphMany
+          other: Models.Encountering
+      columns:
+        name:
+          some: stuff
+        email:
+          some: stuff
+      updateRules:
+        email:
+          - required
+          - email
+        name:
+          - required
     compilers:
       - php-laravel
 #      - js-ember
@@ -17,6 +28,9 @@ resources:
   Models.TrailCategory:
     model:
       base: Trapps.Core.Models.Base
+      columns:
+        name:
+          other: stuff
     compilers:
       - php-laravel
 #      - js-ember
