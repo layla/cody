@@ -255,7 +255,7 @@ $input = array(
 
 $files = $app->make('cody')->compileInput($input);
 
-// Or, if you like your input to be parsed, specify the name of the parser as the second argument
+// Or, if you like your input to be parsed, specify the name of the parser as the second argument (gotta love YAML :)
 
 $input = "
 package: Example.Package
@@ -270,6 +270,29 @@ resources:
 ";
 
 $files = $app->make('cody')->compileInput($input, 'yml');
+
+// Or json if you like
+
+$input = '
+{
+  "package": "Example.Package",
+  "resources": {
+    Models."News": {
+      "model": {
+        "relations": {
+          "categories": {
+            "other": Models.Category
+          }
+        }
+      }
+      "compilers": [
+        "laravel-php"
+      ]
+    }
+  }
+}';
+
+$files = $app->make('cody')->compileInput($input, 'json');
 
 foreach($files as $filename => $content)
 {
