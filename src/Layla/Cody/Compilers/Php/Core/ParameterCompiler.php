@@ -7,10 +7,12 @@ class ParameterCompiler extends PhpCompiler {
 	/**
 	 * Create a new ParameterCompiler instance
 	 *
-	 * @param string $blueprint The blueprint to compile
+	 * @param string $name The name of the parameter
+	 * @param string $configuration The configuration
 	 */
-	public function __construct($configuration)
+	public function __construct($name, $configuration)
 	{
+		$this->name = $name;
 		$this->configuration = $configuration;
 	}
 
