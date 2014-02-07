@@ -68,7 +68,7 @@ class GenerateCommand extends Command {
 		$path = $this->argument('path');
 		$format = $this->option('format');
 
-		$parser = $this->container->make('formats.'.$format);
+		$parser = $this->container->make('parsers.'.$format);
 		if(is_null($path))
 		{
 			if( ! file_exists('code.'.$format))

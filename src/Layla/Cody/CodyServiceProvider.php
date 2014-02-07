@@ -5,6 +5,7 @@ use Layla\Cody\Cody;
 use Layla\Cody\Parsers\Json;
 use Layla\Cody\Parsers\Stdin;
 use Layla\Cody\Parsers\Yaml;
+use Layla\Cody\Parsers\Php;
 
 use Layla\Cody\Compilers\Php\LaravelCompiler;
 use Layla\Cody\Compilers\Js\EmberCompiler;
@@ -25,21 +26,31 @@ class CodyServiceProvider {
 		});
 	}
 
-	protected function registerFormats()
+	protected function registerParsers()
 	{
-		$this->app->bind('formats.json', function()
+		$this->app->bind('parsers.json', function()
 		{
 			return new Json;
 		});
 
-		$this->app->bind('formats.stdin', function()
+		$this->app->bind('parsers.stdin', function()
 		{
 			return new Stdin;
 		});
 
-		$this->app->bind('formats.yml', function()
+		$this->app->bind('parsers.yml', function()
 		{
 			return new Yaml;
+		});
+
+		$this->app->bind('parsers.yml', function()
+		{
+			return new Yaml;
+		});
+
+		$this->app->bind('parsers.php', function()
+		{
+			return new Php;
 		});
 	}
 
@@ -82,7 +93,7 @@ class CodyServiceProvider {
 	public function register()
 	{
 		$this->registerCody();
-		$this->registerFormats();
+		$this->registerParsers();
 		$this->registerCompilers();
 		$this->registerHelpers();
 	}

@@ -36,7 +36,7 @@ class Cody {
 	{
 		if( ! is_null($format))
 		{
-			$parser = $this->app->make('formats.'.$format);
+			$parser = $this->app->make('parsers.'.$format);
 
 			$input = $parser->parse($input);
 		}
