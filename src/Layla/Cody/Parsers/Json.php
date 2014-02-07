@@ -1,6 +1,6 @@
 <?php namespace Layla\Cody\Parsers;
 
-class Yaml extends Parser {
+class Json extends Parser {
 
 	protected $format = 'json';
 
