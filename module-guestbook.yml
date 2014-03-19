@@ -1,0 +1,75 @@
+package: Gosidesign.Guestbook
+resources:
+  Controllers.MessageController:
+    controller:
+      base: Gosidesign.Core.Controllers.Base
+    compilers:
+      - php-laravel
+
+  Models.Message:
+    model:
+      base: Gosidesign.Core.Models.Base
+      relations:
+        categories:
+          type: hasMany
+          other: Gosidesign.Guestbook.Models.MessageCategory
+        user:
+          type: hasOne
+          other: Gosidesign.Account.Models.User
+        parent:
+          type: belongsTo
+          other: Gosidesign.Guestbook.Models.Message
+        children:
+          type: hasMany
+          other: Gosidesign.Guestbook.Models.Message
+      columns:
+        parent_id:
+          some: stuff
+        name:
+          some: stuff
+        email:
+          some: stuff
+        ip:
+          some: stuff
+        body:
+          some: stuff
+        created_at:
+          some: stuff
+        updated_at:
+          some: stuff
+      rules:
+        name:
+          - required
+        body:
+          - required
+    compilers:
+      - php-laravel
+
+  Models.MessageCategory:
+    model:
+      base: Gosidesign.Core.Models.Base
+      columns:
+        name:
+          other: stuff
+    compilers:
+      - php-laravel
+
+  Migrations.create_some_fucking_shit:
+    migration:
+      columns:
+        parent_id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        ip:
+          type: string
+        body:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    compilers:
+      - php-laravel
