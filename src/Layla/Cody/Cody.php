@@ -1,5 +1,7 @@
 <?php namespace Layla\Cody;
 
+use Exception;
+
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
@@ -41,12 +43,27 @@ class Cody {
 			$input = $parser->parse($input);
 		}
 
+		if( ! isset($input['package']))
+		{
+			throw new Exception("Syntax error: 'package' key not present in input. Given input is: ".json_encode($input, JSON_PRETTY_PRINT));
+		}
+
+		if( ! isset($input['resources']))
+		{
+			throw new Exception("Syntax error: 'resources' key not present in input. Given input is: ".json_encode($input, JSON_PRETTY_PRINT));
+		}
+
 		$package = $input['package'];
 		$resources = $input['resources'];
 
 		$files = array();
 		foreach($resources as $name => $resource)
 		{
+			if( ! isset($resource['compilers']))
+			{
+				throw new Exception("Syntax error: 'compilers' key not present in resource configuration. Given resource configuration is: ".json_encode($resource, JSON_PRETTY_PRINT));
+			}
+
 			$compilers = $resource['compilers'];
 			unset($resource['compilers']);
 

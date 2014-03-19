@@ -17,7 +17,7 @@ class ModelCompiler extends ClassCompiler {
 
 		foreach($relations as $name => $relation)
 		{
-			$namespaceCompiler = $this->getNamespaceCompilerFor($this->package.'.'.$relation['other']);
+			$namespaceCompiler = $this->getNamespaceCompilerFor($relation['other']);
 
 			$this->addMethod($name, array(
 				"returnType" => $namespaceCompiler->getName(),

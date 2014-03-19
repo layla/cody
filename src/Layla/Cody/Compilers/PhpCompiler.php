@@ -93,6 +93,11 @@ class PhpCompiler extends Compiler {
 			return $this->compileArray($thing);
 		}
 
+		if(is_string($thing))
+		{
+			return "'".$thing."'";
+		}
+
 		return $thing;
 	}
 
