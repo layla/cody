@@ -2,12 +2,10 @@
 
 class Compiler {
 
-	public function __construct($app, $package, $name, $configuration)
+	public function __construct($app, $resource)
 	{
 		$this->app = $app;
-		$this->package = $package;
-		$this->name = $name;
-		$this->configuration = $configuration;
+		$this->resource = $resource;
 
 		$this->setup();
 	}
@@ -95,7 +93,7 @@ class Compiler {
 
 	public function addProperty($name, $configuration)
 	{
-		$this->configuration['properties'][$name] = $configuration;
+		$this->resource->add('properties', $name, $configuration);
 
 		return $this;
 	}
@@ -104,7 +102,7 @@ class Compiler {
 	{
 		$configuration['content'][$this->compiler] = $body;
 
-		$this->configuration['methods'][$name] = $configuration;
+		$this->resource->add('methods', $name, $configuration);
 
 		return $this;
 	}
@@ -113,7 +111,7 @@ class Compiler {
 	{
 		if(is_null($on))
 		{
-			$on = $this->configuration;
+			$on = $this->resource->getConfiguration();
 		}
 
 		return array_key_exists($key, $on) ? $on[$key] : $default;

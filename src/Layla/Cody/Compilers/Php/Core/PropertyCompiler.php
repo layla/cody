@@ -24,9 +24,19 @@ class PropertyCompiler extends PhpCompiler {
 	public function compile()
 	{
 		$comment = $this->comment($this->get('comment')."\n\n@var ".$this->compileType($this->get('type')));
-		$property = $this->get('visibility', 'public').' $'.$this->name.(is_null($this->get('value')) ? '' : ' = '.$this->export($this->get('value')).';');
+		$property = $this->get('visibility', 'public').' $'.$this->name.(is_null($this->get('value')) ? '' : ' = '.$this->export($this->get('value')));
 
 		return $comment."\n".$property;
+	}
+
+	public function get($key, $default = null, $on = null)
+	{
+		if(is_null($on))
+		{
+			$on = $this->configuration;
+		}
+
+		return array_key_exists($key, $on) ? $on[$key] : $default;
 	}
 
 }

@@ -19,21 +19,6 @@ class Cody {
 		$this->input = $input;
 	}
 
-	public function compileResource($type, $package, $name, $configuration, $compilers)
-	{
-		$files = array();
-		foreach($compilers as $compiler)
-		{
-			$compiler = $this->app->make('compiler.'.$compiler, array($package, $name, $configuration));
-
-			list($path, $content) = $compiler->compile($type);
-
-			$files[$path] = $content;
-		}
-
-		return $files;
-	}
-
 	public function compileInput($input, $format = null)
 	{
 		if( ! is_null($format))
@@ -43,37 +28,23 @@ class Cody {
 			$input = $parser->parse($input);
 		}
 
-		if( ! isset($input['package']))
-		{
-			throw new Exception("Syntax error: 'package' key not present in input. Given input is: ".json_encode($input, JSON_PRETTY_PRINT));
-		}
+		$packages = Objectifier::objectify($input);
 
-		if( ! isset($input['resources']))
+		$results = array();
+		foreach($packages as $package)
 		{
-			throw new Exception("Syntax error: 'resources' key not present in input. Given input is: ".json_encode($input, JSON_PRETTY_PRINT));
-		}
-
-		$package = $input['package'];
-		$resources = $input['resources'];
-
-		$files = array();
-		foreach($resources as $name => $resource)
-		{
-			if( ! isset($resource['compilers']))
+			foreach($package->getResources() as $resource)
 			{
-				throw new Exception("Syntax error: 'compilers' key not present in resource configuration. Given resource configuration is: ".json_encode($resource, JSON_PRETTY_PRINT));
+				foreach($resource->getCompilers() as $identifier)
+				{
+					$compiler = $this->app->make('compiler.'.$identifier, array($resource));
+
+					$results[$compiler->getDestination()] = $compiler->compile();
+				}
 			}
-
-			$compilers = $resource['compilers'];
-			unset($resource['compilers']);
-
-			$type = key($resource);
-			$configuration = $resource[$type];
-
-			$files = array_merge($files, $this->compileResource($type, $package, $name, $configuration, $compilers));
 		}
 
-		return $files;
+		return $results;
 	}
 
 	public function json()

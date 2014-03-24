@@ -65,4 +65,14 @@ class MethodCompiler extends PhpCompiler {
 		return $comment."\n".'public function '.$this->getName()."()\n{\n".$this->indent($this->get('content'))."\n}";
 	}
 
+	public function get($key, $default = null, $on = null)
+	{
+		if(is_null($on))
+		{
+			$on = $this->configuration;
+		}
+
+		return array_key_exists($key, $on) ? $on[$key] : $default;
+	}
+
 }

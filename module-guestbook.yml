@@ -56,20 +56,8 @@ resources:
 
   Migrations.create_some_fucking_shit:
     migration:
-      columns:
-        parent_id:
-          type: string
-        name:
-          type: string
-        email:
-          type: string
-        ip:
-          type: string
-        body:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
+      imports:
+        Gosidesign.Guestbook.Models.Message:
+          - columns
     compilers:
       - php-laravel

@@ -2,7 +2,7 @@
 
 class Stdin extends Parser {
 
-	protected $format = 'stdin';
+	protected $extension = 'stdin';
 
 	public function parse()
 	{

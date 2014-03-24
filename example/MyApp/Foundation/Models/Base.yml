@@ -2,6 +2,7 @@ model:
   name: Base
   methods:
     get.translated.attributes:
+      comment: Get the translated attributes
       returnType: array
       content:
         php-core: return $this->translatedAttributes();

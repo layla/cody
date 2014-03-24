@@ -14,12 +14,14 @@ class ClassCompiler extends PhpCompiler {
 	 */
 	public function getUses()
 	{
+		$package = $this->resource->getPackage();
+
 		$uses = $this->get('uses', array());
 
 		$namespaceCompiler = $this->getNamespaceCompilerFor($this->get('base'));
 
 		// Add baseclass to use statements if necesarry
-		if( ! is_null($this->get('base')) && ! $namespaceCompiler->isWithinNamespaceOf($this->package.'.'.$this->name))
+		if( ! is_null($this->get('base')) && ! $namespaceCompiler->isWithinNamespaceOf($package->getVendor().'.'.$package->getName()))
 		{
 			$uses[] = $namespaceCompiler->getName();
 		}
@@ -59,7 +61,7 @@ class ClassCompiler extends PhpCompiler {
 	 */
 	public function compile()
 	{
-		$nameCompiler = $this->getNamespaceCompilerFor($this->package.'.'.$this->name);
+		$nameCompiler = $this->getNamespaceCompilerFor($this->resource->getIdentifier());
 		$baseCompiler = $this->getNamespaceCompilerFor($this->get('base'));
 
 		// Start the php file
@@ -134,22 +136,7 @@ class ClassCompiler extends PhpCompiler {
 		// Close the class
 		$content .= "\n}\n\n";
 
-		$filename = $this->getFilename();
-
-		return array(
-			$filename,
-			$content
-		);
-	}
-
-	public function getFilename()
-	{
-		$packageParts = explode('.', $this->package);
-		list($vendor, $name) = $packageParts;
-
-		$nameParts = explode('.', $this->name);
-
-		return 'vendor/'.strtolower($vendor.'/'.$name).'/src/'.implode('/', $packageParts).'/'.implode('/', $nameParts).'.php';
+		return $content;
 	}
 
 }

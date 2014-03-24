@@ -7,12 +7,11 @@ class Parser {
 
 	public function parseDir($path)
 	{
-		$format = $this->format;
+		$extension = $this->extension;
 
 		$path = realpath($path);
 
 		$contents = array();
-
 		foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path)) as $filename)
 		{
 			if(in_array(basename($filename), array('.', '..')))
@@ -20,14 +19,19 @@ class Parser {
 				continue;
 			}
 
-			$name = str_replace($path.'/', '', $filename);
-			$name = substr($name, 0, - strlen('.'.$format));
-			$parts = explode('/', $name);
-			$namespace = array_shift($parts).'.'.array_shift($parts);
-			$name = implode('.', $parts);
+			$parts = explode('/', str_replace($path.'/', '', $filename));
+			$className = substr(array_pop($parts), 0, - strlen('.'.$extension));
 
-			$contents['package'] = $namespace;
-			$contents['resources'][$name] = $this->parseFile($filename);
+			$package = array_shift($parts).'.'.array_shift($parts);
+			$namespace = implode('.', $parts);
+
+			$resourceIdentifier = $namespace.'.'.$className;
+
+			$resource = array(
+				$resourceIdentifier => $this->parseFile($filename)
+			);
+
+			$contents[$package] = array_key_exists($package, $contents) ? array_merge($contents[$package], $resource) : $resource;
 		}
 
 		return $contents;

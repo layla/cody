@@ -21,4 +21,14 @@ class ParameterCompiler extends PhpCompiler {
 		return array('@param', $this->get('type'), '$'.$this->name, $this->get('comment'));
 	}
 
+	public function get($key, $default = null, $on = null)
+	{
+		if(is_null($on))
+		{
+			$on = $this->configuration;
+		}
+
+		return array_key_exists($key, $on) ? $on[$key] : $default;
+	}
+
 }

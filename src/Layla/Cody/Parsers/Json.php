@@ -2,7 +2,7 @@
 
 class Json extends Parser {
 
-	protected $format = 'json';
+	protected $extension = 'json';
 
 	public function parse($content)
 	{

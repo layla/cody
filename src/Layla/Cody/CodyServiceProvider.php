@@ -60,23 +60,23 @@ class CodyServiceProvider {
 
 		$app->bind('compiler.php-laravel', function($app, $arguments)
 		{
-			list($package, $name, $configuration) = $arguments;
+			list($resource) = $arguments;
 
-			return new LaravelCompiler($app, $package, $name, $configuration);
+			return new LaravelCompiler($app, $resource);
 		});
 
 		$app->bind('compiler.js-ember', function($app, $arguments)
 		{
-			list($package, $name, $configuration) = $arguments;
+			list($resource) = $arguments;
 
-			return new EmberCompiler($app, $app, $name, $configuration);
+			return new EmberCompiler($app, $resource);
 		});
 
 		$app->bind('compiler.python-django', function($app, $arguments)
 		{
-			list($package, $name, $configuration) = $arguments;
+			list($resource) = $arguments;
 
-			return new DjangoCompiler($app, $app, $name, $configuration);
+			return new DjangoCompiler($app, $resource);
 		});
 	}
 

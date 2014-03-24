@@ -8,24 +8,31 @@ use Layla\Cody\Compilers\Php\Laravel\MigrationCompiler;
 
 class LaravelCompiler extends PhpCompiler {
 
-	public function compile($type)
+	public function compile()
 	{
-		switch($type)
+		switch($this->resource->getType())
 		{
 			case 'model':
-				$compiler = new ModelCompiler($this->app, $this->package, $this->name, $this->configuration);
+				$compiler = new ModelCompiler($this->app, $this->resource);
 			break;
 
 			case 'controller':
-				$compiler = new ControllerCompiler($this->app, $this->package, $this->name, $this->configuration);
+				$compiler = new ControllerCompiler($this->app, $this->resource);
 			break;
 
 			case 'migration':
-				$compiler = new MigrationCompiler($this->app, $this->package, $this->name, $this->configuration);
+				$compiler = new MigrationCompiler($this->app, $this->resource);
 			break;
 		}
 
 		return $compiler->compile();
+	}
+
+	public function getDestination()
+	{
+		$package = $this->resource->getPackage();
+
+		return strtolower($package->getVendor()).'/'.strtolower($package->getName()).'/src/'.$package->getVendor().'/'.$package->getName().'/'.implode('/', explode('.', $this->resource->getName())).'.php';
 	}
 
 }

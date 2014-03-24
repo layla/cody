@@ -20,7 +20,7 @@ class NamespaceConverter extends \PHPParser_NodeVisitorAbstract {
 
 class Php extends Parser {
 
-	protected $format = 'php';
+	protected $extension = 'php';
 
 	public function getFullyQualifiedClassName($file)
 	{

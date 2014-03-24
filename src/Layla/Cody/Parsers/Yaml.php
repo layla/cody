@@ -4,7 +4,7 @@ use Symfony\Component\Yaml\Yaml as YamlParser;
 
 class Yaml extends Parser {
 
-	protected $format = 'yml';
+	protected $extension = 'yml';
 
 	protected function parse($content)
 	{

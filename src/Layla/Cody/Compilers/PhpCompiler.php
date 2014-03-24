@@ -103,7 +103,7 @@ class PhpCompiler extends Compiler {
 
 	public function compile($type)
 	{
-		$compiler = new ClassCompiler($this->app, $this->package, $this->name, $this->configuration);
+		$compiler = new ClassCompiler($this->app, $this->resource);
 
 		return $compiler->compile();
 	}

@@ -1,0 +1,42 @@
+MyApp.Guestbook:
+  resources:
+    Models.Message:
+      model:
+        base: MyApp.Core.Models.Base
+        relations:
+          categories:
+            type: hasMany
+            other: MyApp.Guestbook.Models.MessageCategory
+          user:
+            type: hasOne
+            other: MyApp.Account.Models.User
+          parent:
+            type: belongsTo
+            other: MyApp.Guestbook.Models.Message
+          children:
+            type: hasMany
+            other: MyApp.Guestbook.Models.Message
+        columns:
+          parent_id:
+            type: integer
+          name:
+            type: string
+          email:
+            type: string
+          ip:
+            type: string
+          body:
+            type: text
+          created_at:
+            type: date
+          updated_at:
+            type: date
+        rules:
+          email:
+            - email
+          name:
+            - required
+          body:
+            - required
+      compilers:
+        - php-laravel
