@@ -12,12 +12,12 @@
         }
     ],
     "require": {
-       	"symfony/yaml": "dev-master",
-        "illuminate/console": "~4",
-        "illuminate/container": "~4",
-        "illuminate/support": "~4",
-        "illuminate/view": "~4",
-        "illuminate/events": "~4",
+       	"symfony/yaml": "~2.4",
+        "illuminate/console": "~4.2",
+        "illuminate/container": "~4.2",
+        "illuminate/support": "~4.2",
+        "illuminate/view": "~4.2",
+        "illuminate/events": "~4.2",
         "sami/sami": "dev-master",
         "jms/php-manipulator": "dev-master",
         "nikic/php-parser": "0.9.*"
