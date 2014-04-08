@@ -1,5 +1,7 @@
 <?php namespace Layla\Cody;
 
+use Exception;
+
 use Layla\Cody\Blueprints\Package;
 use Layla\Cody\Blueprints\Resource;
 
@@ -8,67 +10,58 @@ class Objectifier {
 	public static function objectify($input)
 	{
 		$packages = array();
-		foreach($input as $identifier => $resources)
+		foreach($input as $packageIdentifier => $packageConfiguration)
 		{
 			// create the package or get the existing one
-			if(array_key_exists($identifier, $packages))
+			if(array_key_exists($packageIdentifier, $packages))
 			{
-				$package = $packages[$identifier];
+				$package = $packages[$packageIdentifier];
 			}
 			else
 			{
-				list($vendor, $name) = explode('.', $identifier);
+				list($vendor, $name) = explode('.', $packageIdentifier);
 				$package = new Package($vendor, $name);
 
 				// add the new package to our index
-				$packages[$identifier] = $package;
+				$packages[$packageIdentifier] = $package;
 			}
 
-			foreach($resources as $name => $resource)
+			// grab the compilers key off the package config if it is set there
+			if(array_key_exists('compilers', $packageConfiguration))
 			{
-				static::validateResource($resource);
+				$compilers = $packageConfiguration['compilers'];
+			}
 
-				// grab the compilers key off the resource
-				if(array_key_exists('compilers', $resource))
+			$resources = array_key_exists('resources', $packageConfiguration) ? $packageConfiguration['resources'] : array();
+			foreach($resources as $resourceIdentifier => $resourceConfiguration)
+			{
+				static::validateResourceConfiguration($resourceConfiguration);
+
+				// grab the compilers key off the resource if it is set there
+				if(array_key_exists('compilers', $resourceConfiguration))
 				{
-					$compilers = $resource['compilers'];
-					unset($resource['compilers']);
+					$compilers = $resourceConfiguration['compilers'];
 				}
 
-				// loop over the last key and value pair in the array, we are using a foreach for convenience here, there is probably an even easier way to do this.
-				foreach($resource as $type => $configuration)
+				if( ! isset($compilers))
 				{
-					$resource = new Resource($package, $type, $name, $configuration, $compilers);
+					throw new Exception("Syntax error: no 'compilers' key found in package or resource. Given resource is: ".json_encode($resourceConfiguration, JSON_PRETTY_PRINT));
 				}
 
-				$package->addResource($resource);
+				$type = $resourceConfiguration['type'];
+
+				$package->addResource(new Resource($package, $type, $resourceIdentifier, $resourceConfiguration, $compilers));
 			}
 		}
 
 		return $packages;
 	}
 
-	protected static function validateResource($resource)
+	protected static function validateResourceConfiguration($configuration)
 	{
-		if( ! array_key_exists('compilers', $resource))
+		if( ! array_key_exists('type', $configuration))
 		{
-			throw new Exception("Syntax error: no 'compilers' key found. Given resource is: ".json_encode($resource, JSON_PRETTY_PRINT));
-		}
-
-		if( ! count($resource) == 2)
-		{
-			$allowedKeys = array('compilers', 'model', 'controller', 'migration');
-
-			$faultyKeys = array();
-			foreach(array_keys($resource) as $key)
-			{
-				if( ! in_array($key, $allowedKeys))
-				{
-					$faultyKeys[] = $key;
-				}
-			}
-
-			throw new Exception("Syntax error: faulty keys found in resource (".implode(',', $faultyKeys)."). Given resource is: ".json_encode($resource, JSON_PRETTY_PRINT));
+			throw new Exception("Syntax error: no 'type' key found in resource configuration. Given resource is: ".json_encode($configuration, JSON_PRETTY_PRINT));
 		}
 	}
 

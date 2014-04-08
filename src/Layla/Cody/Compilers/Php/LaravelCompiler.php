@@ -28,11 +28,4 @@ class LaravelCompiler extends PhpCompiler {
 		return $compiler->compile();
 	}
 
-	public function getDestination()
-	{
-		$package = $this->resource->getPackage();
-
-		return strtolower($package->getVendor()).'/'.strtolower($package->getName()).'/src/'.$package->getVendor().'/'.$package->getName().'/'.implode('/', explode('.', $this->resource->getName())).'.php';
-	}
-
 }

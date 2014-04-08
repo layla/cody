@@ -31,6 +31,13 @@ class Resource {
 		return $this->configuration;
 	}
 
+	public function setConfiguration($configuration)
+	{
+		$this->configuration = $configuration;
+
+		return $this;
+	}
+
 	public function getCompilers()
 	{
 		return $this->compilers;
