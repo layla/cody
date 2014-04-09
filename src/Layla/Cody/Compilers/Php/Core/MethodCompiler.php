@@ -32,7 +32,7 @@ class MethodCompiler extends PhpCompiler {
 			$lines = array();
 			foreach($parameters as $name => $configuration)
 			{
-				$parameter = new ParameterCompiler($configuration);
+				$parameter = new ParameterCompiler($name, $configuration);
 
 				$lines[] = $parameter->getLine();
 			}
@@ -62,7 +62,17 @@ class MethodCompiler extends PhpCompiler {
 	{
 		$comment = $this->getComment();
 
-		return $comment."\n".'public function '.$this->getName()."()\n{\n".$this->indent($this->get('content'))."\n}";
+		$parameters = $this->get('parameters');
+
+		$parameterStrings = array();
+		foreach($parameters as $name => $configuration)
+		{
+			$parameter = new ParameterCompiler($name, $configuration);
+
+			$parameterStrings[] = $parameter->compile();
+		}
+
+		return $comment."\n".'public function '.$this->getName()."(".implode(', ', $parameterStrings).")\n{\n".$this->indent($this->get('content'))."\n}";
 	}
 
 	public function get($key, $default = null, $on = null)

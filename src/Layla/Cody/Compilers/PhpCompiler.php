@@ -98,12 +98,17 @@ class PhpCompiler extends Compiler {
 			return "'".$thing."'";
 		}
 
+		if(is_null($thing))
+		{
+			return 'null';
+		}
+
 		return $thing;
 	}
 
-	public function compile($type)
+	public function compile()
 	{
-		$compiler = new ClassCompiler($this->app, $this->resource);
+		$compiler = new ClassCompiler($this->resource);
 
 		return $compiler->compile();
 	}
@@ -112,7 +117,7 @@ class PhpCompiler extends Compiler {
 	{
 		$package = $this->resource->getPackage();
 
-		return strtolower($package->getVendor()).'/'.strtolower($package->getName()).'/src/'.$package->getVendor().'/'.$package->getName().'/'.implode('/', explode('.', $this->resource->getName())).'.php';
+		return strtolower($package->getVendor()).'/'.strtolower($package->getName()).'/src/'.implode('/', explode('.', $this->resource->getName())).'.php';
 	}
 
 }

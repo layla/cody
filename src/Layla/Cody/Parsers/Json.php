@@ -6,7 +6,7 @@ class Json extends Parser {
 
 	public function parse($content)
 	{
-		return json_decode($content);
+		return json_decode($content, true);
 	}
 
 }

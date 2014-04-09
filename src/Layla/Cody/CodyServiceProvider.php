@@ -7,6 +7,7 @@ use Layla\Cody\Parsers\Stdin;
 use Layla\Cody\Parsers\Yaml;
 use Layla\Cody\Parsers\Php;
 
+use Layla\Cody\Compilers\PhpCompiler;
 use Layla\Cody\Compilers\Php\LaravelCompiler;
 use Layla\Cody\Compilers\Js\EmberCompiler;
 use Layla\Cody\Compilers\Python\DjangoCompiler;
@@ -57,6 +58,13 @@ class CodyServiceProvider {
 	protected function registerCompilers()
 	{
 		$app = $this->app;
+
+		$app->bind('compiler.php-core', function($app, $arguments)
+		{
+			list($resource) = $arguments;
+
+			return new PhpCompiler($app, $resource);
+		});
 
 		$app->bind('compiler.php-laravel', function($app, $arguments)
 		{

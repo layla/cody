@@ -2,6 +2,11 @@
 
 class Resource {
 
+	protected $compilerMap = array(
+		'php-core' => 'Layla\Cody\Compilers\PhpCompiler',
+		'php-laravel' => 'Layla\Cody\Compilers\Php\LaravelCompiler'
+	);
+
 	public function __construct($package, $type, $name, $configuration, $compilers)
 	{
 		$this->package = $package;
@@ -31,13 +36,6 @@ class Resource {
 		return $this->configuration;
 	}
 
-	public function setConfiguration($configuration)
-	{
-		$this->configuration = $configuration;
-
-		return $this;
-	}
-
 	public function getCompilers()
 	{
 		return $this->compilers;
@@ -45,7 +43,7 @@ class Resource {
 
 	public function getIdentifier()
 	{
-		return $this->package->getIdentifier().'.'.$this->name;
+		return $this->name;
 	}
 
 	public function get($key, $default = null)
@@ -63,6 +61,18 @@ class Resource {
 	public function add($type, $key, $value)
 	{
 		$this->configuration[$type][$key] = $value;
+	}
+
+	public function getCompilerObjects()
+	{
+		$compilers = array();
+		foreach($this->getCompilers() as $key)
+		{
+			$class = $this->compilerMap[$key];
+			$compilers[] = new $class($this);
+		}
+
+		return $compilers;
 	}
 
 }

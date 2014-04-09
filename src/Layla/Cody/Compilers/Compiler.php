@@ -2,12 +2,16 @@
 
 class Compiler {
 
-	public function __construct($app, $resource)
+	public function __construct($resource)
 	{
-		$this->app = $app;
 		$this->resource = $resource;
 
 		$this->setup();
+	}
+
+	public function getResource()
+	{
+		return $this->resource;
 	}
 
 	/**

@@ -95,7 +95,7 @@ class MigrationCompiler extends ClassCompiler {
 			}
 			else
 			{
-				// and it's gone
+				// new columns, add it
 				$changes[] = new Change('dropColumn', $name, $configuration);
 			}
 		}
@@ -121,7 +121,7 @@ class MigrationCompiler extends ClassCompiler {
 			$parts[]  = $change->compile();
 		}
 
-		return implode("\n", $parts);
+		return implode('', $parts);
 	}
 
 	protected function getAllColumns()
@@ -139,13 +139,6 @@ class MigrationCompiler extends ClassCompiler {
 			// $relation['other']
 			dd('relation', $relation);
 		}
-	}
-
-	public function getDestination()
-	{
-		$package = $this->resource->getPackage();
-
-		return strtolower($package->getVendor()).'/'.strtolower($package->getName()).'/src/'.$package->getVendor().'/'.$package->getName().'/'.implode('/', explode('.', $this->resource->getName())).'.php';
 	}
 
 }

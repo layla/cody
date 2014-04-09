@@ -13,19 +13,26 @@ class LaravelCompiler extends PhpCompiler {
 		switch($this->resource->getType())
 		{
 			case 'model':
-				$compiler = new ModelCompiler($this->app, $this->resource);
+				$compiler = new ModelCompiler($this->resource);
 			break;
 
 			case 'controller':
-				$compiler = new ControllerCompiler($this->app, $this->resource);
+				$compiler = new ControllerCompiler($this->resource);
 			break;
 
 			case 'migration':
-				$compiler = new MigrationCompiler($this->app, $this->resource);
+				$compiler = new MigrationCompiler($this->resource);
 			break;
 		}
 
 		return $compiler->compile();
+	}
+
+	public function getDestination()
+	{
+		$package = $this->resource->getPackage();
+
+		return strtolower($package->getVendor()).'/'.strtolower($package->getName()).'/src/'.implode('/', explode('.', $this->resource->getName())).'.php';
 	}
 
 }

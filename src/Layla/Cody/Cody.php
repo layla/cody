@@ -5,6 +5,8 @@ use Exception;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Cody {
 
 	public function __construct($app)
@@ -27,9 +29,6 @@ class Cody {
 		}
 
 		$packages = Objectifier::objectify($input);
-
-		$resolver = new Resolver($packages);
-		$resolver->resolve();
 
 		$results = array();
 		foreach($packages as $package)

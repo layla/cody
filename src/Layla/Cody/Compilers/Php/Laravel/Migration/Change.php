@@ -23,11 +23,6 @@ class Change {
 			throw new Exception("Syntax error: migration column configuration does not contain 'name' attribute. Given configuration is: ".json_encode($this->configuration, JSON_PRETTY_PRINT));
 		}
 
-		if( ! array_key_exists('type', $this->configuration))
-		{
-			throw new Exception("Syntax error: key 'type' not found in column definition. Given column is: ".json_encode(array($this->name => $this->configuration), JSON_PRETTY_PRINT));
-		}
-
 		$this->method = $this->configuration['type'];
 
 		if(isset($this->name))
@@ -71,7 +66,7 @@ class Change {
 	public function compile()
 	{
 		return '$table->'.$this->method.'('.implode(', ', $this->arguments).')'.
-			(empty($this->default) ? '' : "->default('".$this->default."')").";";
+			(empty($this->default) ? '' : "->default('".$this->default."')").";\n";
 	}
 
 }
