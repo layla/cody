@@ -17,12 +17,16 @@ class ModelCompiler extends ClassCompiler {
 
 		foreach($relations as $name => $relation)
 		{
-			$namespaceCompiler = $this->getNamespaceCompilerFor($relation['other']);
+			$arg = '';
+			if($relation['other']) {
+				$namespaceCompiler = $this->getNamespaceCompilerFor($relation['other']);
+				$arg = "'".$namespaceCompiler->getName()."'";
+			}
 
 			$this->addMethod($name, array(
 				"returnType" => $namespaceCompiler->getName(),
 				"comment" => "Relation with ".$namespaceCompiler->getClass()
-			), 'return $this->'.$relation['type']."('".$namespaceCompiler->getName()."');");
+			), 'return $this->'.$relation['type']."(".$arg.");");
 		}
 	}
 

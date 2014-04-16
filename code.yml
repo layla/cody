@@ -1,7 +1,10 @@
-package: Trapps.Trails
-resources:
-  Models.Trail:
-    model:
+Trapps.Trails:
+  compilers:
+    - php-laravel
+    # - js-ember
+  resources:
+    Models.Trail:
+      type: model
       base: Trapps.Core.Models.Base
       relations:
         categories:
@@ -21,16 +24,10 @@ resources:
           - email
         name:
           - required
-    compilers:
-      - php-laravel
-#      - js-ember
 
-  Models.TrailCategory:
-    model:
+    Models.TrailCategory:
+      type: model
       base: Trapps.Core.Models.Base
       columns:
         name:
           other: stuff
-    compilers:
-      - php-laravel
-#      - js-ember

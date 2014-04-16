@@ -1,13 +1,16 @@
-package: Gosidesign.Guestbook
-resources:
-  Controllers.MessageController:
-    controller:
+Gosidesign.Guestbook:
+  compilers:
+    - php-laravel
+  resources:
+    Controllers.MessageController:
+      type: controller
       base: Gosidesign.Core.Controllers.Base
-    compilers:
-      - php-laravel
 
-  Models.Message:
-    model:
+    Models.Message:
+      type: model
+      table: messages
+      previous_table: message
+      connection: master
       base: Gosidesign.Core.Models.Base
       relations:
         categories:
@@ -23,41 +26,46 @@ resources:
           type: hasMany
           other: Gosidesign.Guestbook.Models.Message
       columns:
+        id:
+          previous_name: name
+          primary: true
+          previous_primary: false
+          type: integer
+          indexes:
+            - unique
+            - index
         parent_id:
-          some: stuff
+          previous_name: p_id
+          previous_index: false
+          type: integer
+          indexes: unique index
         name:
-          some: stuff
+          type: string
         email:
-          some: stuff
+          type: string
         ip:
-          some: stuff
+          type: string
         body:
-          some: stuff
+          type: text
         created_at:
-          some: stuff
+          type: date
         updated_at:
-          some: stuff
+          type: date
       rules:
         name:
           - required
         body:
           - required
-    compilers:
-      - php-laravel
 
-  Models.MessageCategory:
-    model:
+    Models.MessageCategory:
+      type: model
       base: Gosidesign.Core.Models.Base
       columns:
         name:
           other: stuff
-    compilers:
-      - php-laravel
 
-  Migrations.create_some_fucking_shit:
-    migration:
+    Migrations.CreateSomeFuckingShit:
+      type: migration
       imports:
         Gosidesign.Guestbook.Models.Message:
           - columns
-    compilers:
-      - php-laravel

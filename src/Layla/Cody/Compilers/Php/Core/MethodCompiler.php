@@ -62,7 +62,7 @@ class MethodCompiler extends PhpCompiler {
 	{
 		$comment = $this->getComment();
 
-		$parameters = $this->get('parameters');
+		$parameters = $this->get('parameters', array());
 
 		$parameterStrings = array();
 		foreach($parameters as $name => $configuration)

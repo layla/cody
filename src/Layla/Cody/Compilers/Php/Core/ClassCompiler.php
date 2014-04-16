@@ -85,7 +85,10 @@ class ClassCompiler extends PhpCompiler {
 			$content .= "\n";
 		}
 
-		// $content .= $this->get('ument');
+		if($this->resource->get('comment'))
+		{
+			$content .= $this->comment($this->resource->get('comment'))."\n";
+		}
 
 		// Add the name of the class
 		$content .= $this->type." ".$nameCompiler->getClass();
