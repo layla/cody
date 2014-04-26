@@ -47,7 +47,7 @@ class PhpCompiler extends Compiler {
 			$segments[] = (is_int($key) ? '' : "'".$key."'").(empty($value) ? '' : (is_int($value) ? ' => ' : '')."'".$value."'");
 		}
 
-		return "array(\n\t".implode(",\n\t", $segments)."\n);";
+		return "array(\n\t".implode(",\n\t", $segments)."\n)";
 	}
 
 	/**
@@ -91,6 +91,11 @@ class PhpCompiler extends Compiler {
 		if(is_array($thing))
 		{
 			return $this->compileArray($thing);
+		}
+
+		if(is_bool($thing))
+		{
+			return $thing ? "true" : "false";
 		}
 
 		if(is_string($thing))
