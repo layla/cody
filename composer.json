@@ -13,11 +13,10 @@
     ],
     "require": {
        	"symfony/yaml": "~2.4",
-        "illuminate/console": "~4.2",
-        "illuminate/container": "~4.2",
-        "illuminate/support": "~4.2",
-        "illuminate/view": "~4.2",
-        "illuminate/events": "~4.2",
+        "illuminate/console": "~4.1",
+        "illuminate/container": "~4.1",
+        "illuminate/support": "~4.1",
+        "illuminate/events": "~4.1",
         "sami/sami": "dev-master",
         "jms/php-manipulator": "dev-master",
         "nikic/php-parser": "0.9.*"
