@@ -4,7 +4,8 @@ class Resource {
 
 	protected $compilerMap = array(
 		'php-core' => 'Layla\Cody\Compilers\PhpCompiler',
-		'php-laravel' => 'Layla\Cody\Compilers\Php\LaravelCompiler'
+		'php-laravel' => 'Layla\Cody\Compilers\Php\LaravelCompiler',
+		'php-doctrine' => 'Layla\Cody\Compilers\Php\DoctrineCompiler',
 	);
 
 	public function __construct($package, $type, $name, $configuration, $compilers)
