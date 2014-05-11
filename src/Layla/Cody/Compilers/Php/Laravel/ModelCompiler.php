@@ -17,15 +17,18 @@ class ModelCompiler extends ClassCompiler {
 
 		foreach($relations as $name => $relation)
 		{
-			$arg = '';
-			if($relation['other']) {
+			if(array_key_exists('other', $relation)) {
 				$namespaceCompiler = $this->getNamespaceCompilerFor($relation['other']);
+				$otherClass = $namespaceCompiler->getClass();
 				$arg = "'".$namespaceCompiler->getName()."'";
+			} else {
+				$otherClass = null;
+				$arg = $this->export(array_get($relation, 'morph_name', null));
 			}
 
 			$this->addMethod($name, array(
-				"returnType" => $namespaceCompiler->getName(),
-				"comment" => "Relation with ".$namespaceCompiler->getClass()
+				"returnType" => "lluminate\Database\Eloquent\Relations\Relation",
+				"comment" => is_null($otherClass) ? "Relation" : "Relation with " . $otherClass
 			), 'return $this->'.$relation['type']."(".$arg.");");
 		}
 	}
